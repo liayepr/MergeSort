@@ -4,7 +4,8 @@ using namespace std;
 void Merge(int A[], int start, int end, int mid)
 {
 	int i, j, k;
-	int temp[end - start + 1];
+	int* temp = new int[end - start + 1];
+	//int temp[end - start + 1];
 	i = start;
 	k = 0;
 	j = mid + 1;
@@ -47,6 +48,8 @@ void Merge(int A[], int start, int end, int mid)
 	{
 		A[i] = temp[i - start];
 	}
+	delete[] temp;
+	
 }
 
 void Merge_sort(int A[], int start, int end)
