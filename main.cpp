@@ -1,65 +1,62 @@
 #include <iostream>
 using namespace std;
 
-void Merge(int A[], int p, int q, int r )
+void Merge(int A[], int start, int end, int mid)
 {
 	int i, j, k;
-	int n1 = q - p + 1;
-	int n2 = r - q;
+	int temp[end - start + 1];
+	i = start;
+	k = 0;
+	j = mid + 1;
 
-	int L[n1], R[n2];
-
-	for (i = 0; i < n1; i++)
-		L[i] = A[p + i];
-	for (j = 0; j < n2; j++)
-		R[j] = A[q + 1 + j];
-
-	/* Merge the temp arrays back into arr[l..r]*/
-	i = 0; // Initial index of first subarray 
-	j = 0; // Initial index of second subarray 
-	k = p; // Initial index of merged subarray 
-	while (i < n1 && j < n2)
+	while (i <= mid && j <= end)
 	{
-		if (L[i] <= R[j])
+		if (A[i] < A[j])
 		{
-			A[k] = L[i];
+			temp[k] = A[i];
+			k++;
 			i++;
 		}
 		else
 		{
-			A[k] = R[j];
+			temp[k] = A[j];
+			k++;
 			j++;
 		}
-		k++;
 	}
-	/* Copy the remaining elements of L[], if there
-	  are any */
-	while (i < n1)
+
+	// Insert all the remaining values from i to mid into temp[].
+	while (i <= mid)
 	{
-		A[k] = L[i];
+		temp[k] = A[i];
+		k++;
 		i++;
-		k++;
 	}
 
-	/* Copy the remaining elements of R[], if there
-	   are any */
-	while (j < n2)
+	// Insert all the remaining values from j to high into temp[].
+	while (j <= end)
 	{
-		A[k] = R[j];
-		j++;
+		temp[k] = A[j];
 		k++;
+		j++;
 	}
 
+
+	// Assign sorted data stored in temp[] to a[].
+	for (i = start; i <= end; i++)
+	{
+		A[i] = temp[i - start];
+	}
 }
 
-void Merge_sort(int A[], int p, int r)
+void Merge_sort(int A[], int start, int end)
 {
-	if (p < r)
+	if (start < end)
 	{
-		int q = (p + r) / 2;
-		Merge_sort(A, p, q);
-		Merge_sort(A, q + 1, r);
-		Merge(A, p, q, r);
+		int mid = (start + end) / 2;
+		Merge_sort(A, start, mid);
+		Merge_sort(A, mid + 1, end);
+		Merge(A, start, end, mid);
 	}
 }
 
@@ -73,15 +70,13 @@ void printArray(int A[], int size)
 
 int main()
 {
-	int A[] = { 1, 9, 5, 12, 78, 98, 4, 321, 65, 198 };
-	int p = 0, r = 9;
-	int size = r - p;
+	int A[] = { 1, 98, 5, 12, 78, 19, 4, 321, 65, 8 };
+	int start = 0, end = 9;
+	int size = end - start + 1;
 	cout << "Array before soting: " << endl;
-	printArray( A, size);
-	    cout << "Array after soting: " << endl;
-		Merge_sort(A, p, r);
-		printArray(A, size);
-		system("pause");
+	printArray(A, size);
+	cout << "Array after soting: " << endl;
+	Merge_sort(A, start, end);
+	printArray(A, size);
+	system("pause");
 }
-
-
